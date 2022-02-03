@@ -41,7 +41,7 @@ namespace SiTConnect
                     if (ts.TotalMinutes > 1)
                     {
                         lb_error.Text = "OTP expired. Resending a new OTP...";
-                        logger.Info("OTP expired. Resending a new OTP to {email}...", email);
+                        logger.Info("OTP expired. Resending a new OTP to {Id}...", Session["TwoFA"].ToString());
                         deleteOTP(Session["TwoFA"].ToString());
                         createOTP(email);
                         getOTPValue();
@@ -50,6 +50,8 @@ namespace SiTConnect
                     else
                     {
                         deleteOTP(Session["TwoFA"].ToString());
+
+                        logger.Info("Login success. User Account {Email} is logged in.", Session["TwoFA"].ToString());
 
                         Session.Remove("TwoFA");
                         Session.Remove("TwoFAEmail");
@@ -63,7 +65,7 @@ namespace SiTConnect
 
                         Response.Cookies.Add(new HttpCookie("AuthToken", guid));
 
-                        logger.Info("Login success. User Account {Email} is logged in.", email);
+                        
 
                         if (!checkMaxPwdAge(email))
                         {
@@ -78,6 +80,7 @@ namespace SiTConnect
                 else
                 {
                     lb_error.Text = "OTP value is incorrect!";
+                    logger.Info("Login failed. OTP value is incorrect for {Id}", Session["TwoFA"].ToString());
                 }
             }
         }
