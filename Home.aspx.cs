@@ -51,7 +51,7 @@ namespace SiTConnect
 
         protected void btn_logout_Click(object sender, EventArgs e)
         {
-            logger.Info("Logout success. User Account {Email} is logged out.", Session["LoggedIn"].ToString());
+            logger.Info("Logout success. User Account {Id} is logged out.", getDBValue(Session["LoggedIn"].ToString(), "Id"));
 
             Session.Clear();
             Session.Abandon();
@@ -188,6 +188,38 @@ namespace SiTConnect
             catch (Exception ex) { throw new Exception(ex.ToString()); }
             finally { }
             return plainText;
+        }
+
+        protected string getDBValue(string email, string col)
+        {
+            string s = null;
+            SqlConnection connection = new SqlConnection(MYDBConnectionString);
+            string sql = "select " + col + " FROM ACCOUNT WHERE Email=@Email";
+            SqlCommand command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@Email", email);
+            try
+            {
+                connection.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader[col] != null)
+                        {
+                            if (reader[col] != DBNull.Value)
+                            {
+                                s = reader[col].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally { connection.Close(); }
+            return s;
         }
     }
 }

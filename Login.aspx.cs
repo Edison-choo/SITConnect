@@ -74,7 +74,7 @@ namespace SiTConnect
                                 else
                                 {
                                     lb_error.Text = "Your account is locked!";
-                                    logger.Info("Login failed. User Account {Email} is locked", email);
+                                    logger.Info("Login failed. User Account {Id} is locked", getDBValue(email, "Id"));
                                     return;
                                 }
                             }
@@ -90,7 +90,7 @@ namespace SiTConnect
                                 getOTPValue();
                                 sendEmail(email);
 
-                                logger.Info("Login details are authenticated. OTP values are sent to {Email}.", email);
+                                logger.Info("Login details are authenticated. OTP values are sent to {Id}.", getDBValue(email, "Id"));
 
                                 Response.Redirect("checkOTP.aspx", false);
 
@@ -122,7 +122,7 @@ namespace SiTConnect
                                 {
                                     EditLoginAttempt(email, 0);
                                     lb_error.Text = "Userid or password is not valid. Please try again.";
-                                    logger.Info("Login failed. Incorrect login details for {email}", email);
+                                    logger.Info("Login failed. Incorrect login details for {Id}", getDBValue(email, "Id"));
 
                                 }
                             }
@@ -130,7 +130,7 @@ namespace SiTConnect
                         else
                         {
                             lb_error.Text = "Userid or password is not valid. Please try again.";
-                            logger.Info("Login failed. Incorrect login details for {email}", email);
+                            logger.Info("Login failed. Incorrect login details for unknown email");
                         }
                     }
 
