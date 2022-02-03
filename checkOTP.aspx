@@ -32,6 +32,8 @@
             <br />
             <asp:Label ID="lb_error" runat="server" ForeColor="Red"></asp:Label>
             <br />
+            &nbsp;<asp:Button ID="Button1" runat="server" OnClick="Button1_Click" style="height: 29px" Text="Resend" />
+&nbsp;&nbsp;&nbsp;
             <button type="button" onclick="javascript:validateAll()">Submit</button>
             <asp:Button ID="btn_submit" runat="server" OnClick="btn_submit_Click" Text="Submit" style="visibility:hidden;" />
         </div>
