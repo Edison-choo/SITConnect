@@ -41,6 +41,7 @@ namespace SiTConnect
                     if (ts.TotalMinutes > 1)
                     {
                         lb_error.Text = "OTP expired. Resending a new OTP...";
+                        lb_error.ForeColor = System.Drawing.Color.Red;
                         logger.Info("OTP expired. Resending a new OTP to {Id}...", Session["TwoFA"].ToString());
                         deleteOTP(Session["TwoFA"].ToString());
                         createOTP(email);
@@ -80,6 +81,7 @@ namespace SiTConnect
                 else
                 {
                     lb_error.Text = "OTP value is incorrect!";
+                    lb_error.ForeColor = System.Drawing.Color.Red;
                     logger.Info("Login failed. OTP value is incorrect for {Id}", Session["TwoFA"].ToString());
                 }
             }
@@ -288,6 +290,19 @@ namespace SiTConnect
                 throw new Exception(ex.ToString());
             }
 
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            var email = Session["TwoFAEmail"].ToString();
+
+            lb_error.Text = "Resending a new OTP...";
+            lb_error.ForeColor = System.Drawing.Color.Black;
+            logger.Info("Resending a new OTP to {Id}...", Session["TwoFA"].ToString());
+            deleteOTP(Session["TwoFA"].ToString());
+            createOTP(email);
+            getOTPValue();
+            sendEmail(email);
         }
     }
 }
